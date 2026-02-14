@@ -1,0 +1,14 @@
+# Vercel ignore file
+.git
+.gitignore
+.github
+node_modules
+.env.example
+.env.local
+.env.production.local
+README.md
+DEPLOYMENT.md
+API.md
+ARCHITECTURE.md
+docker-compose.yml
+Dockerfile
