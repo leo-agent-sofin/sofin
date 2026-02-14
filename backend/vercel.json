@@ -1,0 +1,27 @@
+{
+  "name": "sofin-api",
+  "version": 2,
+  "buildCommand": "npm run build",
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "JWT_SECRET": "@jwt_secret",
+    "STRAVA_CLIENT_ID": "@strava_client_id",
+    "STRAVA_CLIENT_SECRET": "@strava_client_secret",
+    "STRAVA_REDIRECT_URI": "@strava_redirect_uri",
+    "FRONTEND_URL": "@frontend_url",
+    "NODE_ENV": "production",
+    "PORT": "3001"
+  },
+  "builds": [
+    {
+      "src": "dist/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/index.js"
+    }
+  ]
+}

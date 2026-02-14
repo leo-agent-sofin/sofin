@@ -2,7 +2,7 @@ export interface User {
   id: string;
   email: string;
   password_hash?: string;
-  strava_id?: string;
+  strava_id?: number;
   strava_access_token?: string;
   strava_refresh_token?: string;
   strava_ytd_km?: number;

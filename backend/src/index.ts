@@ -114,7 +114,8 @@ app.post('/api/auth/strava/callback', async (req: Request, res: Response) => {
     // Get YTD cycling KM
     const ytdKm = await (async () => {
       try {
-        const stats = await (await import('./strava')).getAthleteStats(tokenData.access_token, athleteId);
+        const { getAthleteStats } = await import('./strava');
+        const stats = await getAthleteStats(tokenData.access_token, athleteId as number);
         return Math.round((stats.all_ride_totals.distance / 1000) * 100) / 100;
       } catch {
         return 0;
