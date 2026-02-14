@@ -27,7 +27,7 @@ export function validateEmail(email: string): boolean {
 
 export function validatePassword(password: string): boolean {
   // Minimum 8 characters
-  return password && password.length >= 8;
+  return !!(password && password.length >= 8);
 }
 
 export async function tryAsync<T>(fn: () => Promise<T>): Promise<[T | null, Error | null]> {
