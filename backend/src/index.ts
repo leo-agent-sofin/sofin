@@ -237,18 +237,36 @@ app.get('/api/health', (req: Request, res: Response) => {
   res.json({ status: 'ok' });
 });
 
+// Error handling for uncaught exceptions
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 // Initialize database and start server
 async function start() {
   try {
+    console.log('🚀 Starting Sofin server...');
+    console.log(`📦 Environment: ${process.env.NODE_ENV || 'development'}`);
+    
     await initDb();
-    console.log('✓ Database initialized');
     
     app.listen(PORT, () => {
       console.log(`✓ Server running on http://localhost:${PORT}`);
-      console.log(`✓ Strava OAuth URL: ${process.env.STRAVA_REDIRECT_URI}`);
+      console.log(`✓ Frontend URL: ${process.env.FRONTEND_URL}`);
+      console.log(`✓ Strava OAuth redirect: ${process.env.STRAVA_REDIRECT_URI}`);
+      console.log('');
+      console.log('🎯 API Endpoints:');
+      console.log('   POST   /api/auth/signup');
+      console.log('   POST   /api/auth/login');
+      console.log('   GET    /api/auth/strava/url');
+      console.log('   POST   /api/auth/strava/callback');
+      console.log('   GET    /api/user/profile (protected)');
+      console.log('   PUT    /api/user/social-links (protected)');
+      console.log('   GET    /api/stats/:userId (public)');
+      console.log('   GET    /api/health');
     });
   } catch (error) {
-    console.error('Failed to start server:', error);
+    console.error('❌ Failed to start server:', error);
     process.exit(1);
   }
 }
