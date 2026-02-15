@@ -1,0 +1,146 @@
+================================================================================
+SOFIN - VERCEL DEPLOYMENT INSTRUCTIONS FOR FELIX
+================================================================================
+
+STATUS: Code pushed to GitHub ✅
+REPO: https://github.com/leo-agent-sofin/sofin
+TARGET: Deploy to Vercel and get live URLs for Testing agent
+
+TIMELINE: 7.5 hours available (target: hand off by 17:00 GMT+1)
+
+================================================================================
+DEPLOYMENT PROCESS (Copy-paste friendly)
+================================================================================
+
+OPTION A: MANUAL WEB UI (Recommended, 15 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Step 1: Deploy Frontend
+───────────────────────
+1. Open: https://vercel.com/new
+2. Click: "Import Git Repository"
+3. Paste: https://github.com/leo-agent-sofin/sofin
+4. Click: "Continue"
+5. Select: "Next.js" (framework)
+6. Environment Variables: ADD THESE
+   NEXT_PUBLIC_API_URL=https://sofin-api.vercel.app
+   NEXT_PUBLIC_APP_URL=https://sofin.vercel.app
+7. Click: "Deploy"
+8. Wait: 2-3 minutes (watch build progress)
+9. SUCCESS: Copy frontend URL (looks like: https://sofin-xyz123.vercel.app)
+
+Step 2: Deploy Backend
+──────────────────────
+1. Open: https://vercel.com/new
+2. Click: "Import Git Repository"
+3. Paste: https://github.com/leo-agent-sofin/sofin
+4. Click: "Continue"
+5. IMPORTANT - Edit Project:
+   - Root Directory: backend
+   - Click: "Continue"
+6. Select: "Other" (framework)
+7. Environment Variables: ADD THESE
+   NODE_ENV=production
+   JWT_SECRET=sofin-secret-key-change-me-later
+   STRAVA_CLIENT_ID=12345
+   STRAVA_CLIENT_SECRET=your-secret-placeholder
+   STRAVA_REDIRECT_URI=https://sofin-api.vercel.app/api/auth/strava/callback
+   FRONTEND_URL=https://sofin.vercel.app
+   DATABASE_URL=postgresql://user:pass@host/db (add after Postgres provisioning)
+8. Click: "Deploy"
+9. Wait: 2-3 minutes
+10. SUCCESS: Copy backend URL (looks like: https://sofin-api-xyz123.vercel.app)
+
+Step 3: Setup Vercel Postgres (Optional but Recommended)
+────────────────────────────────────────────────────────
+1. Open: https://vercel.com/dashboard
+2. Click: "Storage"
+3. Click: "Create Database" → "Postgres"
+4. Select: Any region
+5. Click: "Create"
+6. Copy: Connection string
+7. Go to Backend Deployment → Settings → Environment Variables
+8. Add: DATABASE_URL = (paste the connection string)
+9. Click: "Save"
+10. Redeploy backend (blue "Redeploy" button at top)
+
+Step 4: Update Frontend API URL (If different from placeholder)
+───────────────────────────────────────────────────────────────
+1. Go to Frontend Deployment → Settings → Environment Variables
+2. Update: NEXT_PUBLIC_API_URL = https://sofin-api-xyz123.vercel.app
+3. Redeploy frontend
+
+Step 5: Test
+────────────
+• Frontend: https://sofin-xyz123.vercel.app
+• API: https://sofin-api-xyz123.vercel.app/api/health
+  Should see: {"status":"ok"}
+
+================================================================================
+QUICK REFERENCE
+================================================================================
+
+REPO URL:
+https://github.com/leo-agent-sofin/sofin
+
+DEPLOY LINKS:
+Frontend: https://vercel.com/new
+Backend:  https://vercel.com/new
+Postgres: https://vercel.com/dashboard → Storage
+
+GITHUB BRANCH: main
+FRONTEND ROOT: . (default)
+BACKEND ROOT:  backend
+
+================================================================================
+WHAT TO SEND BACK TO CODER AGENT
+================================================================================
+
+Once deployed, send these to Leo:
+
+Frontend URL:  https://sofin-xyz123.vercel.app
+Backend URL:   https://sofin-api-xyz123.vercel.app
+Status:        LIVE ✅
+
+This will be handed to Testing agent for QA.
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+Q: Build failed on frontend
+A: Check Vercel build logs → usually missing environment variable
+
+Q: Build failed on backend
+A: Ensure Root Directory = "backend" is set before deploy
+
+Q: API returns 500 error
+A: DATABASE_URL missing → Set in environment variables and redeploy
+
+Q: Can't add environment variables
+A: Must do it in the deployment settings BEFORE clicking Deploy
+
+================================================================================
+TIMELINE ESTIMATE
+================================================================================
+
+Manual deployment (web UI):
+- Frontend deploy:     3 min
+- Backend deploy:      3 min
+- Postgres setup:      2 min
+- Testing:            2 min
+─────────────────────────────
+TOTAL:               ~10 minutes
+
+================================================================================
+STATUS FOR TESTING AGENT
+================================================================================
+
+Once live, Testing agent will:
+1. Test signup flow
+2. Test QR code generation
+3. Test public stats page
+4. Report back to Slack
+
+Target hand-off: 17:00 GMT+1 today
+================================================================================
