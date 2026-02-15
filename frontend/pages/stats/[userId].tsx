@@ -51,7 +51,7 @@ export default function StatsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-100">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-gray-100">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
       </div>
     );
@@ -59,7 +59,7 @@ export default function StatsPage() {
 
   if (error || !stats) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-100 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-gray-100 p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">User Not Found</h1>
           <p className="text-gray-600">{error}</p>
@@ -69,17 +69,17 @@ export default function StatsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100 p-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 p-4 py-8">
       <div className="max-w-md mx-auto">
         {/* Card */}
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-green-500 to-blue-500 h-20"></div>
+          <div className="bg-gradient-to-r from-gray-700 to-black h-20"></div>
 
           {/* Content */}
           <div className="p-8 text-center -mt-10 relative z-10">
             {/* Avatar placeholder */}
-            <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+            <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-gray-600 to-black rounded-full flex items-center justify-center text-white text-3xl font-bold">
               🚴
             </div>
 
@@ -129,7 +129,7 @@ export default function StatsPage() {
           </p>
           <a
             href="/"
-            className="mt-4 inline-block text-blue-600 hover:text-blue-700 font-semibold text-sm"
+            className="mt-4 inline-block text-black hover:text-gray-700 font-semibold text-sm"
           >
             Learn more →
           </a>

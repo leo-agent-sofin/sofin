@@ -47,7 +47,7 @@ export default function PublicProfile() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
       </div>
     );
   }
@@ -61,7 +61,7 @@ export default function PublicProfile() {
             The cyclist profile you're looking for doesn't exist or hasn't shared their data yet.
           </p>
           <a href="/">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+            <button className="bg-black hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded">
               Back to Sofin
             </button>
           </a>
@@ -101,7 +101,7 @@ export default function PublicProfile() {
                 <h3 className="text-lg font-semibold text-gray-900">Longest Ride</h3>
                 <span className="text-3xl">🚴</span>
               </div>
-              <p className="text-4xl font-bold text-blue-600">
+              <p className="text-4xl font-bold text-black">
                 {records.longest_ride_km?.toFixed(1) || '—'}
               </p>
               <p className="text-gray-600 mt-2">kilometers</p>
@@ -152,7 +152,7 @@ export default function PublicProfile() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               <div>
                 <p className="text-gray-600 font-semibold">Total Activities</p>
-                <p className="text-3xl font-bold text-indigo-600 mt-2">
+                <p className="text-3xl font-bold text-black mt-2">
                   {records.activity_count}
                 </p>
               </div>
@@ -200,7 +200,7 @@ export default function PublicProfile() {
         <div className="text-center mt-12">
           <p className="text-gray-600 mb-4">Want your own Sofin profile?</p>
           <a href="/">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg">
+            <button className="bg-black hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg">
               Create Your Profile
             </button>
           </a>

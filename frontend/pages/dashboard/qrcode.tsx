@@ -79,20 +79,20 @@ export default function QRCodePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-gray-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
       </div>
     );
   }
 
   if (error || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-gray-100 p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">QR Code Not Available</h1>
           <p className="text-gray-600 mb-4">{error || 'User not found'}</p>
           <Link href="/dashboard">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+            <button className="bg-black hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded">
               Back to Dashboard
             </button>
           </Link>
@@ -102,7 +102,7 @@ export default function QRCodePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 p-4 py-8">
       <div className="max-w-md mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">Your Sofin QR Code</h1>
@@ -121,7 +121,7 @@ export default function QRCodePage() {
           </div>
 
           {/* Stats Preview */}
-          <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+          <div className="mb-6 p-4 bg-gray-100 rounded-lg">
             <p className="text-sm text-gray-600">
               <strong>QR Points to:</strong> /stats/{user.id}
             </p>
@@ -134,14 +134,14 @@ export default function QRCodePage() {
           <div className="space-y-3">
             <button
               onClick={handleDownload}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition"
+              className="w-full bg-black hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded transition"
             >
               Download QR Code
             </button>
             
             <button
               onClick={handlePrint}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded transition"
+              className="w-full bg-gray-800 hover:bg-black text-white font-semibold py-2 px-4 rounded transition"
             >
               Print QR Code
             </button>

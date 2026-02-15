@@ -39,14 +39,14 @@ export default function StravaCallback() {
   }, [router.isReady, router.query]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-gray-100 p-4">
       <div className="max-w-md w-full">
         <div className="bg-white rounded-lg shadow-lg p-8 text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Connecting to Strava</h1>
           
           {status && (
             <div className="py-8">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
               <p className="mt-4 text-gray-600">{status}</p>
             </div>
           )}

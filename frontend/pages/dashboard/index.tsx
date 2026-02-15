@@ -117,15 +117,15 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-gray-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-gray-100 p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 text-center max-w-md">
           <p className="text-red-600 mb-4">Failed to load profile</p>
           <button
@@ -182,12 +182,12 @@ export default function Dashboard() {
                 <button
                   onClick={handleSync}
                   disabled={syncing}
-                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded"
+                  className="bg-black hover:bg-gray-900 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded"
                 >
                   {syncing ? 'Syncing...' : 'Sync Activities'}
                 </button>
                 <Link href="/dashboard/qrcode">
-                  <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded">
+                  <button className="bg-gray-800 hover:bg-black text-white font-semibold py-2 px-4 rounded">
                     View QR Code
                   </button>
                 </Link>
@@ -224,9 +224,9 @@ export default function Dashboard() {
               </div>
 
               {/* Longest Ride */}
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
                 <p className="text-sm text-gray-600 font-semibold">Longest Ride</p>
-                <p className="text-3xl font-bold text-blue-600 mt-2">
+                <p className="text-3xl font-bold text-gray-700 mt-2">
                   {records.longest_ride_km?.toFixed(1) || '—'}
                 </p>
                 <p className="text-xs text-gray-600 mt-1">km</p>
@@ -260,9 +260,9 @@ export default function Dashboard() {
               </div>
 
               {/* Activity Count */}
-              <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-4 border border-indigo-200">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
                 <p className="text-sm text-gray-600 font-semibold">Activities</p>
-                <p className="text-3xl font-bold text-indigo-600 mt-2">
+                <p className="text-3xl font-bold text-gray-700 mt-2">
                   {records.activity_count || 0}
                 </p>
                 <p className="text-xs text-gray-600 mt-1">rides</p>
