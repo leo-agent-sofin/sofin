@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build --prefix frontend",
   "env": {
     "DATABASE_URL": "@database_url",
     "JWT_SECRET": "@jwt_secret",
@@ -8,17 +8,5 @@
     "STRAVA_REDIRECT_URI": "https://sofin.vercel.app/api/auth/strava/callback",
     "FRONTEND_URL": "https://sofin.vercel.app",
     "NEXT_PUBLIC_API_URL": "https://sofin.vercel.app"
-  },
-  "monorepos": [
-    {
-      "path": "backend",
-      "command": "npm run build",
-      "src": "backend"
-    },
-    {
-      "path": "frontend",
-      "command": "npm run build",
-      "src": "frontend"
-    }
-  ]
+  }
 }
