@@ -1,12 +1,4 @@
 {
-  "buildCommand": "npm run build --prefix frontend",
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "JWT_SECRET": "@jwt_secret",
-    "STRAVA_CLIENT_ID": "@strava_client_id",
-    "STRAVA_CLIENT_SECRET": "@strava_client_secret",
-    "STRAVA_REDIRECT_URI": "https://sofin.vercel.app/api/auth/strava/callback",
-    "FRONTEND_URL": "https://sofin.vercel.app",
-    "NEXT_PUBLIC_API_URL": "https://sofin.vercel.app"
-  }
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/.next"
 }
