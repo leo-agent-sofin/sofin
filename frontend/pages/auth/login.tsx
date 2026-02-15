@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { authApi, setToken } from '../../lib/api';
+import { login } from '../../lib/localStorage';
 
 export default function Login() {
   const router = useRouter();
@@ -16,12 +16,10 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await authApi.login(email, password);
-      const { token } = response.data;
-      setToken(token);
+      const { user, token } = login(email, password);
       router.push('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed');
+      setError(err.message || 'Login failed');
     } finally {
       setLoading(false);
     }

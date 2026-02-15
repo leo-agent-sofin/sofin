@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { statsApi } from '../../lib/api';
+import { getUserById } from '../../lib/localStorage';
 
 interface Stats {
   id: string;
-  strava_ytd_km: number;
-  social_links: Array<{ platform: string; url: string }>;
+  email: string;
+  strava_ytd_km?: number;
+  social_links?: Array<{ platform: string; url: string }>;
 }
 
 const SOCIAL_ICONS: { [key: string]: string } = {
@@ -29,18 +30,23 @@ export default function StatsPage() {
   useEffect(() => {
     if (!userId) return;
 
-    const fetchStats = async () => {
-      try {
-        const response = await statsApi.getPublicStats(userId as string);
-        setStats(response.data);
-      } catch (err: any) {
-        setError('User not found');
-      } finally {
-        setLoading(false);
+    try {
+      const user = getUserById(userId as string);
+      if (user && user.strava_id) {
+        setStats({
+          id: user.id,
+          email: user.email,
+          strava_ytd_km: user.strava_ytd_km || 0,
+          social_links: user.social_links || [],
+        });
+      } else {
+        setError('User not found or Strava not connected');
       }
-    };
-
-    fetchStats();
+    } catch (err: any) {
+      setError('User not found');
+    } finally {
+      setLoading(false);
+    }
   }, [userId]);
 
   if (loading) {
@@ -78,18 +84,18 @@ export default function StatsPage() {
             </div>
 
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Sofin Athlete</h1>
-            <p className="text-gray-600 mb-6">Cycling Stats</p>
+            <p className="text-gray-600 mb-6">{stats.email.split('@')[0]}'s Cycling Stats</p>
 
             {/* Stats */}
             <div className="bg-gray-50 rounded-lg p-6 mb-6">
               <div className="text-4xl font-bold text-green-600 mb-1">
-                {stats.strava_ytd_km || 0}
+                {stats?.strava_ytd_km || 0}
               </div>
               <p className="text-gray-600 text-sm">Kilometers YTD</p>
             </div>
 
             {/* Social Links */}
-            {stats.social_links && stats.social_links.length > 0 && (
+            {stats?.social_links && stats.social_links.length > 0 && (
               <div className="mb-6">
                 <p className="text-sm text-gray-600 mb-3 font-semibold">Follow</p>
                 <div className="flex flex-wrap gap-3 justify-center">

@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { userApi } from '../../lib/api';
+import QRCode from 'qrcode.react';
+import { getCurrentUser, isAuthenticated } from '../../lib/localStorage';
 
 interface User {
   id: string;
   email: string;
+  strava_id?: string;
+  strava_ytd_km?: number;
   qr_code_url?: string;
 }
 
@@ -14,47 +17,58 @@ export default function QRCodePage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const qrRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await userApi.getProfile();
-        setUser(response.data);
-      } catch (err: any) {
-        setError('Failed to load profile');
-      } finally {
-        setLoading(false);
-      }
-    };
+    // Check if user is authenticated
+    if (!isAuthenticated()) {
+      router.push('/auth/login');
+      return;
+    }
 
-    fetchProfile();
-  }, []);
+    const currentUser = getCurrentUser();
+    if (currentUser && currentUser.strava_id) {
+      setUser(currentUser);
+    } else if (currentUser) {
+      setError('Connect your Strava account first');
+    } else {
+      router.push('/auth/login');
+    }
+    setLoading(false);
+  }, [router]);
 
   const handleDownload = () => {
-    if (!user?.qr_code_url) return;
+    if (!qrRef.current) return;
     
+    const canvas = qrRef.current.querySelector('canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    
+    const url = canvas.toDataURL('image/png');
     const link = document.createElement('a');
-    link.href = user.qr_code_url;
-    link.download = `sofin-qr-${user.id}.png`;
+    link.href = url;
+    link.download = `sofin-qr-${user?.id}.png`;
     link.click();
   };
 
   const handlePrint = () => {
-    if (!user?.qr_code_url) return;
+    if (!qrRef.current) return;
     
     const printWindow = window.open();
     if (printWindow) {
+      const canvas = qrRef.current.querySelector('canvas') as HTMLCanvasElement;
+      const imageUrl = canvas?.toDataURL('image/png') || '';
+      
       printWindow.document.write(`
         <html>
           <head>
             <title>Sofin QR Code</title>
             <style>
-              body { display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+              body { display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; }
               img { max-width: 500px; }
             </style>
           </head>
           <body>
-            <img src="${user.qr_code_url}" alt="Sofin QR Code" />
+            <img src="${imageUrl}" alt="Sofin QR Code" />
           </body>
         </html>
       `);
@@ -71,12 +85,12 @@ export default function QRCodePage() {
     );
   }
 
-  if (!user?.qr_code_url) {
+  if (error || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">QR Code Not Available</h1>
-          <p className="text-gray-600 mb-4">{error || 'Connect your Strava account first'}</p>
+          <p className="text-gray-600 mb-4">{error || 'User not found'}</p>
           <Link href="/dashboard">
             <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
               Back to Dashboard
@@ -97,18 +111,22 @@ export default function QRCodePage() {
           </p>
 
           {/* QR Code Display */}
-          <div className="flex justify-center mb-8 p-4 bg-gray-50 rounded-lg">
-            <img
-              src={user.qr_code_url}
-              alt="Sofin QR Code"
-              className="max-w-xs"
+          <div className="flex justify-center mb-8 p-4 bg-gray-50 rounded-lg" ref={qrRef}>
+            <QRCode
+              value={typeof window !== 'undefined' ? `${window.location.origin}/stats/${user.id}` : `${user.id}`}
+              size={256}
+              level="H"
+              includeMargin={true}
             />
           </div>
 
           {/* Stats Preview */}
           <div className="mb-6 p-4 bg-blue-50 rounded-lg">
             <p className="text-sm text-gray-600">
-              <strong>QR Points to:</strong> {window.location.origin}/stats/{user.id}
+              <strong>QR Points to:</strong> /stats/{user.id}
+            </p>
+            <p className="text-sm text-gray-600 mt-2">
+              <strong>Your YTD Cycling:</strong> {user.strava_ytd_km || 0} km
             </p>
           </div>
 

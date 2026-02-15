@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { userApi, authApi, setToken } from '../../lib/api';
+import { getCurrentUser, logout, mockConnectStrava, isAuthenticated } from '../../lib/localStorage';
 
 interface User {
   id: string;
   email: string;
-  strava_id?: number;
+  strava_id?: string;
   strava_ytd_km?: number;
   qr_code_url?: string;
   social_links?: any[];
@@ -19,41 +19,34 @@ export default function Dashboard() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await userApi.getProfile();
-        setUser(response.data);
-      } catch (err: any) {
-        if (err.response?.status === 401) {
-          router.push('/auth/login');
-        } else {
-          setError('Failed to load profile');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
+    // Check if user is authenticated
+    if (!isAuthenticated()) {
+      router.push('/auth/login');
+      return;
+    }
 
-    fetchProfile();
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      setUser(currentUser);
+    } else {
+      router.push('/auth/login');
+    }
+    setLoading(false);
   }, [router]);
 
   const handleConnectStrava = async () => {
     try {
-      const response = await authApi.getStravaAuthUrl();
-      const { authUrl } = response.data;
-      
-      if (user) {
-        localStorage.setItem('strava_user_id', user.id);
-      }
-      
-      window.location.href = authUrl;
+      if (!user) return;
+      // Mock Strava connection - just update user with fake data
+      const updated = mockConnectStrava(user.id);
+      setUser(updated);
     } catch (err: any) {
-      setError('Failed to get Strava auth URL');
+      setError('Failed to connect Strava');
     }
   };
 
   const handleLogout = () => {
-    setToken(null);
+    logout();
     router.push('/');
   };
 

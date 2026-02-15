@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { authApi, setToken } from '../../lib/api';
+import { signup } from '../../lib/localStorage';
 
 export default function Signup() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -16,12 +17,17 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      const response = await authApi.signup(email, password);
-      const { token } = response.data;
-      setToken(token);
+      if (password !== confirmPassword) {
+        throw new Error('Passwords do not match');
+      }
+      if (password.length < 6) {
+        throw new Error('Password must be at least 6 characters');
+      }
+
+      const { user, token } = signup(email, password);
       router.push('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Signup failed');
+      setError(err.message || 'Signup failed');
     } finally {
       setLoading(false);
     }
@@ -63,6 +69,20 @@ export default function Signup() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="••••••••"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="••••••••"
