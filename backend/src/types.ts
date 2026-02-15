@@ -2,12 +2,16 @@ export interface User {
   id: string;
   email: string;
   password_hash?: string;
+  name?: string;
   strava_id?: number;
   strava_access_token?: string;
   strava_refresh_token?: string;
   strava_ytd_km?: number;
   qr_code_url?: string;
+  primary_slug?: string;
   social_links?: SocialLink[];
+  synced_sources?: any;
+  last_sync_at?: Date;
   created_at: Date;
   updated_at: Date;
 }

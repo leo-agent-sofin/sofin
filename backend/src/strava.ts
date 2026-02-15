@@ -47,6 +47,13 @@ export async function getAthleteStats(accessToken: string, athleteId: number): P
   return response.data;
 }
 
+export async function getAthleteProfile(accessToken: string): Promise<any> {
+  const response = await axios.get(`${STRAVA_API_BASE}/athlete`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  return response.data;
+}
+
 export async function getYTDCyclingKm(accessToken: string, athleteId: number): Promise<number> {
   try {
     const stats = await getAthleteStats(accessToken, athleteId);

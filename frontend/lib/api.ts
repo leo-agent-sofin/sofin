@@ -68,11 +68,30 @@ export const userApi = {
   
   updateSocialLinks: (socialLinks: any[]) =>
     api.put('/api/user/social-links', { socialLinks }),
+  
+  getActivities: (limit = 20, offset = 0) =>
+    api.get('/api/user/activities', { params: { limit, offset } }),
+  
+  getRecords: () =>
+    api.get('/api/user/records'),
+  
+  updateSlug: (slug: string) =>
+    api.put('/api/user/slug', { slug }),
+};
+
+export const slugApi = {
+  checkAvailability: (slug: string) =>
+    api.get('/api/slug/check', { params: { slug } }),
+};
+
+export const syncApi = {
+  syncStrava: () =>
+    api.post('/api/sync/strava'),
 };
 
 export const statsApi = {
-  getPublicStats: (userId: string) =>
-    api.get(`/api/stats/${userId}`),
+  getPublicStats: (slug: string) =>
+    api.get(`/api/stats/${slug}`),
 };
 
 export default api;
